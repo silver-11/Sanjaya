@@ -1,6 +1,6 @@
-# MediAI Frontend
+# Sanjaya Medical AI
 
-A modern, responsive React application for medical image analysis powered by AI.
+An AI-powered medical image-analysis agent. A modern, responsive React application for medical image analysis powered by AI.
 
 ## Features
 
