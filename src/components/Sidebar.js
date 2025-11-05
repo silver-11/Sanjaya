@@ -14,7 +14,8 @@ import {
   BarChart3,
   Upload,
   Activity,
-  Clock
+  Clock,
+  Shield
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -39,6 +40,7 @@ const Sidebar = () => {
 
   // Secondary navigation (More section)
   const moreItems = [
+    { id: 'admin', label: 'Admin', icon: Shield },
     { id: 'profile', label: 'Profile', icon: User },
     { id: 'settings', label: 'Settings', icon: Settings },
     { id: 'faq', label: 'Help & FAQ', icon: HelpCircle },

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { trackLogin, trackLogout } from '../utils/analytics';
 
 const AppContext = createContext();
 
@@ -156,6 +157,7 @@ export const AppProvider = ({ children }) => {
     setUserData(userData);
     setIsLoggedIn(true);
     setCurrentPage('dashboard');
+    try { trackLogin(userData); } catch {}
     
     return { success: true };
   };
@@ -208,6 +210,7 @@ export const AppProvider = ({ children }) => {
     setUserData(userData);
     setIsLoggedIn(true);
     setCurrentPage('dashboard');
+    try { trackLogin(userData); } catch {}
     
     return { success: true };
   };
@@ -216,6 +219,7 @@ export const AppProvider = ({ children }) => {
     setIsLoggedIn(false);
     setCurrentPage('login');
     setUserDropdown(false);
+    try { trackLogout(userData); } catch {}
     setUserData(null);
     localStorage.removeItem('userData');
     localStorage.removeItem('currentUserEmail');
