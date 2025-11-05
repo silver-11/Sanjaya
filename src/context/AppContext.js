@@ -135,6 +135,14 @@ export const AppProvider = ({ children }) => {
     const adminEmailsCsv = process.env.REACT_APP_ADMIN_EMAILS || '';
     const adminEmails = adminEmailsCsv.split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
     const adminCode = process.env.REACT_APP_ADMIN_CODE || '';
+    try {
+      // Debug: shows whether admin config is loaded (not the secret itself)
+      // Remove if undesired
+      console.log('Admin config loaded:', {
+        adminEmails,
+        hasAdminCode: !!adminCode
+      });
+    } catch {}
 
     // Get all registered users
     const users = getUsers();
@@ -159,6 +167,12 @@ export const AppProvider = ({ children }) => {
     }
     
     if (!user) {
+      if (isAdminEmail && !adminCode) {
+        return { success: false, error: 'Admin code not configured. Set REACT_APP_ADMIN_CODE and restart the app.' };
+      }
+      if (isAdminEmail && adminCode && loginPassword !== adminCode) {
+        return { success: false, error: 'Admin code incorrect.' };
+      }
       return { success: false, error: 'User not found. Please sign up first.' };
     }
     
