@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import Layout from './components/Layout';
 import Login from './pages/Login';
@@ -9,6 +9,7 @@ import Analysis from './pages/Analysis';
 import Query from './pages/Query';
 import DiseasePrediction from './pages/DiseasePrediction';
 import History from './pages/History';
+import Admin from './pages/Admin';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import FAQ from './pages/FAQ';
@@ -16,9 +17,16 @@ import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import './styles/index.css';
+import { trackPageView } from './utils/analytics';
 
 const AppContent = () => {
   const { currentPage, isLoggedIn } = useApp();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      try { trackPageView(currentPage); } catch {}
+    }
+  }, [currentPage, isLoggedIn]);
 
   // Render login/signup pages if not logged in
   if (!isLoggedIn) {
@@ -43,6 +51,8 @@ const AppContent = () => {
         return <DiseasePrediction />;
       case 'history':
         return <History />;
+      case 'admin':
+        return <Admin />;
       case 'profile':
         return <Profile />;
       case 'settings':
