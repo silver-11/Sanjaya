@@ -28,6 +28,7 @@ const Sidebar = () => {
     handleLogout, 
     darkMode 
   } = useApp();
+  const { userData } = useApp();
 
   // Main navigation items (top of sidebar)
   const navigationItems = [
@@ -40,7 +41,7 @@ const Sidebar = () => {
 
   // Secondary navigation (More section)
   const moreItems = [
-    { id: 'admin', label: 'Admin', icon: Shield },
+    ...(userData?.role === 'admin' ? [{ id: 'admin', label: 'Admin', icon: Shield }] : []),
     { id: 'profile', label: 'Profile', icon: User },
     { id: 'settings', label: 'Settings', icon: Settings },
     { id: 'faq', label: 'Help & FAQ', icon: HelpCircle },

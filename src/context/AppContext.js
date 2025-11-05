@@ -131,18 +131,41 @@ export const AppProvider = ({ children }) => {
       return { success: false, error: 'Email and password are required' };
     }
     
+    // Admin gating via env (UI-only; not a security boundary)
+    const adminEmailsCsv = process.env.REACT_APP_ADMIN_EMAILS || '';
+    const adminEmails = adminEmailsCsv.split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
+    const adminCode = process.env.REACT_APP_ADMIN_CODE || '';
+
     // Get all registered users
     const users = getUsers();
     
     // Find user by email
-    const user = users.find(u => u.email === loginEmail);
+    let user = users.find(u => u.email === loginEmail);
+    
+    // If admin override and user doesn't exist, auto-provision a local admin user
+    const isAdminEmail = adminEmails.includes(loginEmail.toLowerCase());
+    const isAdminLoginAttempt = isAdminEmail && adminCode && loginPassword === adminCode;
+    if (!user && isAdminLoginAttempt) {
+      user = {
+        fullName: 'Administrator',
+        email: loginEmail,
+        createdAt: new Date().toISOString(),
+        role: 'admin',
+        // store a placeholder; password is admin code path only
+        password: `__admin_code__`
+      };
+      const updated = [...users, user];
+      saveUsers(updated);
+    }
     
     if (!user) {
       return { success: false, error: 'User not found. Please sign up first.' };
     }
     
-    // Verify password
-    if (user.password !== loginPassword) {
+    // Verify password (or admin override via admin code)
+    const isAdminLogin = isAdminLoginAttempt;
+    const passwordOk = isAdminLogin || user.password === loginPassword;
+    if (!passwordOk) {
       return { success: false, error: 'Incorrect password. Please try again.' };
     }
     
@@ -150,13 +173,14 @@ export const AppProvider = ({ children }) => {
     const userData = {
       fullName: user.fullName,
       email: user.email,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      role: isAdminLogin ? 'admin' : (user.role || 'user')
     };
     localStorage.setItem('userData', JSON.stringify(userData));
     localStorage.setItem('currentUserEmail', user.email); // Store current user email for password updates
     setUserData(userData);
     setIsLoggedIn(true);
-    setCurrentPage('dashboard');
+    setCurrentPage((isAdminLogin || userData.role === 'admin') ? 'admin' : 'dashboard');
     try { trackLogin(userData); } catch {}
     
     return { success: true };
@@ -197,19 +221,23 @@ export const AppProvider = ({ children }) => {
     }
     
     // Set user data for session
+    const adminEmailsCsv = process.env.REACT_APP_ADMIN_EMAILS || '';
+    const adminEmails = adminEmailsCsv.split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
+    const isAdmin = adminEmails.includes((userToSave.email || '').toLowerCase());
     const userData = {
       fullName: userToSave.fullName,
       email: userToSave.email,
       picture: userToSave.picture,
       createdAt: userToSave.createdAt,
-      provider: 'google'
+      provider: 'google',
+      role: isAdmin ? 'admin' : 'user'
     };
     
     localStorage.setItem('userData', JSON.stringify(userData));
     localStorage.setItem('currentUserEmail', userToSave.email);
     setUserData(userData);
     setIsLoggedIn(true);
-    setCurrentPage('dashboard');
+    setCurrentPage(isAdmin ? 'admin' : 'dashboard');
     try { trackLogin(userData); } catch {}
     
     return { success: true };

@@ -18,7 +18,7 @@ const StatCard = ({ title, value, icon: Icon, subtitle }) => (
 );
 
 const Admin = () => {
-  const { darkMode } = useApp();
+  const { darkMode, userData } = useApp();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [status, setStatus] = useState(null);
@@ -96,6 +96,17 @@ const Admin = () => {
     lastUpdatedRef.current = new Date();
     return rates;
   }, [stats]);
+
+  if (userData?.role !== 'admin') {
+    return (
+      <div className="p-8">
+        <div className="max-w-xl mx-auto bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-xl p-6">
+          <div className="text-yellow-700 dark:text-yellow-300 font-semibold mb-1">Access restricted</div>
+          <div className="text-sm text-yellow-800 dark:text-yellow-200">You must be logged in with admin credentials to view this page.</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6">
