@@ -131,6 +131,10 @@ data/
 datasets/
 *.parquet
 
+# Large data/report files
+models/reports
+models/*.reports
+
 # Jupyter Notebook
 .ipynb_checkpoints
 *.ipynb
