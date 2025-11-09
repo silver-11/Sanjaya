@@ -94,5 +94,64 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
-collabbackend.py
-DUP/collabbackend.py
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Model files - Now tracked with Git LFS (see .gitattributes)
+# Uncomment these lines if you want to exclude models from Git entirely
+# *.pth
+# *.pkl
+# *.h5
+# *.ckpt
+# *.pt
+# *.onnx
+
+# Model directories - Keep these excluded (unless you want to track all models)
+# checkpoints/
+# models/
+
+# Data files
+*.csv
+*.json
+data/
+datasets/
+*.parquet
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
