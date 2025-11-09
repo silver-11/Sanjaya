@@ -287,9 +287,7 @@ To enable Google Sign-In:
 git lfs pull
 ```
 
-**Note:** If you don't have Git LFS installed, see [MODEL_UPLOAD_GUIDE.md](./MODEL_UPLOAD_GUIDE.md) for setup instructions.
-
-See [DATASET.md](./DATASET.md) for more information about the models.
+See [DATASET.md](./DATASET.md) for more information about the models and datasets.
 
 ## 🚀 Deployment
 

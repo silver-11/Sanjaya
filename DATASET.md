@@ -86,12 +86,7 @@ git lfs pull
 # - models/disease_sentence_model.pkl
 ```
 
-**If Git LFS is not installed:**
-1. Install Git LFS: https://git-lfs.github.com/
-2. Run `git lfs install`
-3. Then run `git lfs pull`
-
-See [MODEL_UPLOAD_GUIDE.md](./MODEL_UPLOAD_GUIDE.md) for detailed instructions.
+**Note:** If Git LFS is not installed on your system, download it from https://git-lfs.github.com/ and run `git lfs install` before pulling the models.
 
 ### Symptom-Disease Dataset (Automatic Download)
 
@@ -111,11 +106,10 @@ If you prefer to download models manually:
 
 ### Google Colab Setup
 
-If using Google Colab, you can either:
-1. **Use Git LFS:** Clone repo and pull LFS files in Colab
-2. **Upload to Drive:** Manually upload models to Google Drive:
-   - `disease_sentence_model.pkl` → `/content/drive/MyDrive/models/`
-   - `checkpoint_chunk_5_epoch_9.pth` → `/content/drive/MyDrive/models/checkpoints/`
+If using Google Colab:
+1. Clone the repository
+2. Run `git lfs pull` to download model files
+3. Models will be available in the `models/` directory
 
 ## Dataset Preprocessing
 
